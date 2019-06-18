@@ -101,23 +101,40 @@ Additional vectors obtained by averaging the signals in a signal window sample. 
 
 The complete list of variables of each feature vector is available in `features.txt`
 
-## Data Transformation
+## Data Transformation - Merging Data set
 
-- The project data was first downloaded and unzip into a folder `UCI HAR Dataset`, whhere measurements are in Test and Train folders.
+- The project data was first downloaded and unzip into a folder `UCI HAR Dataset`, where measurements are in Test and Train folders.
 
 - The `run_analysis.R` loads the following files from **test** and **train** folders
+  `X_test.txt`, `y_test.txt` and `subject_test.txt`
 
-- FROM `X_test.txt`, `y_test.txt` and `subject_test.txt`
-- INTO `test_x`, `test_y`, `test_subject`
-- INTO `train_x`, train_y, `train_subject`
+- The variable (feature) names are load from `features.txt` as column names for `test_x` and `train_x`.
+
+- Activity labels are load from `activity_names.txt`.
+
+- Y data contains 1 column, and column name is set as "activity_id".
+- Subject data contains 1 column, and column name is set as "subject_id".
+
+- Test and Train data are first join by `cbind`, then `rbind` to create as one data set.
 
 
-- The variable (feature) names where load from `features.txt` and used as column names for `test_x` and `train_x`.
+## Data Transformation - Extract mean and std columns
 
-- `test_y`and `train_y` contains 1 column, and colname is set as "activity_id".
+- `grepl` function and regular expression is used to get the columns containing mean and std , as a logical vector.
+- Data is then subset using the logical vector.
 
-- `test_subject`and `train_subject` contains 1 column, and colname is set as "subject_id".
+## Data Transformation - Descriptive activity names
 
+- `merge` function is use to merge the dataset with activity labels from `activity_names.txt` using `activity_id`.
+
+## Data Transformation - Descriptive variable names (feature)
+
+- This step was done earlier (merging data set)
+
+## Data Transformation - Create tiny data set and output to txt file
+
+- Data is group by Subject, Activity, summarise by average (mean) of each variable columns.
+- The final dataset is then written to a txt file `tiny_data_set.txt`.
 
 
 
